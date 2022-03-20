@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import styled from '@emotion/styled';
+import React, { useEffect, useState } from 'react';
+import ListsUser from './components/ListsUser';
+import UserFilter from './components/UserFilter';
 
+const Title = styled.h1`
+  text-align:center;
+`;
 function App() {
+  
+  const [users, setUsers] = useState([]);
+  const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    fetch("https://randomuser.me/api/?results=100").then(response => {
+      if (response.ok) {
+        return response.json()
+      }
+      throw response;
+    }).then(data => {
+      setUsers(data.results);
+    })
+      .catch(error => {
+        console.error("Error", error)
+      })
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Title>List of User</Title>
+      <UserFilter filter={filter} setFilter={setFilter} />
+      <ListsUser users={users} filter={filter}/>
     </div>
   );
 }
