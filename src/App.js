@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ListsUser from './components/ListsUser';
 import UserFilter from './components/UserFilter';
 import UserContext from './UserContext';
+import axios from 'axios';
 
 const Title = styled.h1`
   text-align:center;
@@ -12,19 +13,31 @@ function App() {
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState('');
 
+  async function fetchUsers(){
+    
+    const request = await axios.get("https://randomuser.me/api/?results=100");
+    
+    setUsers(request.data.results);
+    return request;
+  }
 
   useEffect(() => {
-    fetch("https://randomuser.me/api/?results=100").then(response => {
-      if (response.ok) {
-        return response.json()
-      }
-      throw response;
-    }).then(data => {
-      setUsers(data.results);
-    })
-      .catch(error => {
-        console.error("Error", error)
-      })
+    
+    // normal fetch
+    // fetch("https://randomuser.me/api/?results=100").then(response => {
+    //   if (response.ok) {
+    //     return response.json()
+    //   }
+    //   throw response;
+    // }).then(data => {
+    //   setUsers(data.results);
+    // })
+    //   .catch(error => {
+    //     console.error("Error", error)
+    //   })
+
+    // using async with axios
+    fetchUsers();
   }, [])
 
   return (
