@@ -65,7 +65,7 @@ const ListsUser = ()=>{
   const {users,filter} = useContext(UserContext)
   return(
   <UserContainer>
-      {users.filter((user) => user.name.last.toLocaleLowerCase().includes(filter.toLocaleLowerCase())).map(user =>
+      {users.filter((user) => user.name.last.toLocaleLowerCase().includes(filter.toLocaleLowerCase())).sort((a, b) => a.name.last > b.name.last ? 1 : -1).map(user =>
         <UserRow key={user.cell}>
           <Img src={user.picture.medium} />
           <p>{user.name.title} {user.name.last} </p>
